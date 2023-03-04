@@ -29,23 +29,27 @@ public class ProjectService {
 	
 	
 	public ArrayList<Project> all(Long userID){
-		userRepository.findById(userID).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("Usuário com id %d não está cadastrado!", userID)));
+		userRepository.findById(userID).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User with id %d is not registered.", userID)));
 		return repository.allProjects(userID);
 	}
 	
 	public Project find(Long id) {
-		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("Projeto com id %d não está cadastrado!", id)));
+		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("Project with id %d is not registered.", id)));
+	}
+	
+	public User findUser(Long id) {
+		return userRepository.findById(id).orElseThrow(() -> new EntityNotFound(String.format("Project with id %d is not registered.", id)));
 	}
 	
 	public Project add(Project p) {
 		Long userID = p.getUser().getId();
 			
 		if(repository.findByName(p.getName()) == null) {		
-			User user = userRepository.findById(userID).orElseThrow(() -> new EntityNotFound(String.format("Usuário com id %d não está cadastrado!", userID)));
+			User user = userRepository.findById(userID).orElseThrow(() -> new EntityNotFound(String.format("User with id %d is not registered.", userID)));
 			p.setUser(user);
 			return repository.saveAndFlush(p);						
 		}
-		throw new EntityAlreadyExists(String.format("Já existe um projeto com nome \"%s\" !", p.getName()));		
+		throw new EntityAlreadyExists(String.format("There is already a project called \"%s\".", p.getName()));		
 	}
 	
 	public Project updatePartial(Map<String, Object> fields, Long id) {
@@ -68,10 +72,11 @@ public class ProjectService {
 		Project currentProject = find(id);
 		
 		Long userID = projectAtt.getUser().getId();
-		userRepository.findById(userID).orElseThrow(() -> new EntityNotFound(String.format("Usuário com id %d não está cadastrado!", userID)));
-		
+		userRepository.findById(userID).orElseThrow(() -> new EntityNotFound(String.format("User with id %d is not registered.", userID)));
 		BeanUtils.copyProperties(projectAtt, currentProject, "id");
+		
 		return repository.saveAndFlush(currentProject);
+		
 	}
 	
 	public void delete(Long id) {
@@ -79,11 +84,7 @@ public class ProjectService {
 			find(id);
 			repository.deleteById(id);		
 		}catch(DataIntegrityViolationException e) {
-			throw new EntityInUse(String.format("Projeto com id %d não pode ser excluído, pois está em uso!", id));
+			throw new EntityInUse(String.format("Project with id %d cannot be deleted as it is in use.", id));
 		}
-	}
-	
-	private void findUserById(long userID) {
-		userRepository.findById(userID).orElseThrow(() -> new EntityNotFound(String.format("Usuário com id %d não está cadastrado!", userID)));
 	}
 }
