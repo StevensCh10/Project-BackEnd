@@ -1,7 +1,6 @@
 package projeto.redes2.project.exceptionhandler;
 
 import java.util.stream.Collectors;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,10 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
-
 import projeto.redes2.project.exceptions.EntityAlreadyExists;
 import projeto.redes2.project.exceptions.EntityInUse;
 import projeto.redes2.project.exceptions.EntityNotFound;
@@ -68,7 +65,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		if(rootCause instanceof InvalidFormatException) { //valor de entrada de atributo não correspondido p
 			return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
-		}else if(rootCause instanceof PropertyBindingException) {
+		}else if(rootCause instanceof PropertyBindingException) { //valor da propriedade de algum atributo que não existe
 			return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
 		}
 		Problem problem = handleProblem(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, "The request body is invalid. Check syntax error.");
@@ -92,8 +89,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		Problem problem = handleProblem(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail);
 		return handleExceptionInternal(e, problem, headers, status, request);
 	}
-	
-	
 	
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,

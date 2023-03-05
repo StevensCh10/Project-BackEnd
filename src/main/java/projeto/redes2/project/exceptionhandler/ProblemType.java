@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ProblemType {
 	
-	ENTITY_NOT_FOUND_IN_THE_APPEAL("/entity-not-found-in-the-appeal", "Entity not found"),
+	//ENTITY_NOT_FOUND_IN_THE_APPEAL("/entity-not-found-in-the-appeal", "Entity not found"),
 	ENTITY_NOT_FOUND("/entity-not-found", "Entity not found"),
 	ENTITY_IN_USE("/entity-in-use", "Entity in use"),
 	ENTITY_ALREADY_EXISTS("/entity-already-exists", "Entity already exists"),

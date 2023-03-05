@@ -48,8 +48,8 @@ public class ProjectResource {
 	}
 	
 	@PatchMapping("/{id}")
-	public Project updatePartial(@RequestBody Map<String, Object> campos, @PathVariable Long id){
-		return service.updatePartial(campos, id);
+	public Project updatePartial(@RequestBody Map<String, Object> fields, @PathVariable Long id){
+		return service.updatePartial(fields, id);
 	}
 	
 	@PutMapping("/{id}")
