@@ -4,10 +4,12 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import projeto.redes2.project.exceptions.EntityAlreadyExists;
+import projeto.redes2.project.exceptions.EntityInUse;
 import projeto.redes2.project.exceptions.EntityNotFoundInTheAppeal;
 import projeto.redes2.project.model.User;
 import projeto.redes2.project.repository.UserRepository;
@@ -42,7 +44,6 @@ public class UserService {
 		if(repository.findByName(user.getName()) == null) {
 			return repository.save(user);			
 		}
-		System.out.println("opa");
 		throw new EntityAlreadyExists(String.format("Name '%s' entered unavailable.", user.getName()));
 	}
 	
@@ -74,6 +75,11 @@ public class UserService {
 	}
 
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			find(id);
+			repository.deleteById(id);		
+		}catch(DataIntegrityViolationException e) {
+			throw new EntityInUse(String.format("Project with id %d cannot be deleted as it is in use.", id));
+		}
 	}
 }

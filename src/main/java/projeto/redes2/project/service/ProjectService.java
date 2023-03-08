@@ -61,7 +61,6 @@ public class ProjectService {
 	} 
 	
 	public Project updatePartial(Map<String, Object> fields, Long id, HttpServletRequest request) {
-		
 		try {
 			Project projectDestiny = find(id);
 			
