@@ -3,11 +3,19 @@ package projeto.redes2.project.service;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import projeto.redes2.project.exceptions.EntityAlreadyExists;
 import projeto.redes2.project.exceptions.EntityInUse;
@@ -50,22 +58,31 @@ public class ProjectService {
 			return repository.saveAndFlush(p);						
 		}
 		throw new EntityAlreadyExists(String.format("There is already a project called '%s'.", p.getName()));		
-	}
+	} 
 	
-	public Project updatePartial(Map<String, Object> fields, Long id) {
-		Project projectDestiny = find(id);
+	public Project updatePartial(Map<String, Object> fields, Long id, HttpServletRequest request) {
 		
-		ObjectMapper objMapper = new ObjectMapper();
-		Project projectFields = objMapper.convertValue(fields, Project.class);
-		
-		fields.forEach((propertyName, propertyValue) -> {
-			Field field = ReflectionUtils.findField(Project.class, propertyName);
-			field.setAccessible(true);
+		try {
+			Project projectDestiny = find(id);
 			
-			Object newValue = ReflectionUtils.getField(field, projectFields);	
-			ReflectionUtils.setField(field, projectDestiny, newValue);
-		});	
-		return repository.save(projectDestiny);		
+			ObjectMapper objMapper = new ObjectMapper();
+			//objMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true); Deixando explicito que quando uma propriedade estiver anotada com @JsonIgnore
+																						//  Não é pra aceitar no corpo passado como propriedade.
+			objMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true); // Se uma propriedade que não existe for passada no corpo
+			Project projectFields = objMapper.convertValue(fields, Project.class);
+			
+			fields.forEach((propertyName, propertyValue) -> {
+				Field field = ReflectionUtils.findField(Project.class, propertyName);
+				field.setAccessible(true);
+				
+				Object newValue = ReflectionUtils.getField(field, projectFields);	
+				ReflectionUtils.setField(field, projectDestiny, newValue);
+			});	
+			return repository.save(projectDestiny);
+		} catch (IllegalArgumentException e) {
+			Throwable rootCause = ExceptionUtils.getRootCause(e);
+			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, new ServletServerHttpRequest(request));
+		}		
 	}
 	
 	public Project update(Project projectAtt, Long id) {

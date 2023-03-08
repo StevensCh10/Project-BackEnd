@@ -2,6 +2,9 @@ package projeto.redes2.project.controller;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,8 +51,9 @@ public class ProjectResource {
 	}
 	
 	@PatchMapping("/{id}")
-	public Project updatePartial(@RequestBody Map<String, Object> fields, @PathVariable Long id){
-		return service.updatePartial(fields, id);
+	public Project updatePartial(@RequestBody Map<String, Object> fields, @PathVariable Long id, HttpServletRequest request){
+		System.out.println("opaaaaa");
+		return service.updatePartial(fields, id, request);
 	}
 	
 	@PutMapping("/{id}")
