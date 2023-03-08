@@ -9,6 +9,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -27,13 +29,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler()
 	public ResponseEntity<?> handleEntityNotFoundInTheAppeal(EntityNotFoundInTheAppeal e, WebRequest request){
-		Problem problem = handleProblem(STTS_NOT_FOUND, ProblemType.ENTITY_NOT_FOUND, e.getMessage());	
+		Problem problem = handleProblem(STTS_NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, e.getMessage());	
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_NOT_FOUND, request);
 	}
 	
 	@ExceptionHandler()
 	public ResponseEntity<?> handleEntityNotFound(EntityNotFound e, WebRequest request){
-		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_NOT_FOUND, e.getMessage());
+		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.RESOURCE_NOT_FOUND, e.getMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
@@ -51,11 +53,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 	
 	@ExceptionHandler()
-	public ResponseEntity<?> handleFieldNotExists(PropertyNotExist e, WebRequest request){
+	public ResponseEntity<?> handlePropertyNotExists(PropertyNotExist e, WebRequest request){
 		if(e.getCause() instanceof DataIntegrityViolationException)
 			System.out.println(e.getCause());
 		Problem problem = handleProblem(STTS_CONFLICT, ProblemType.PROPERTY_NOT_EXIST, e.getMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_CONFLICT, request);
+	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, WebRequest request){
+		String detail = String.format("The URl parameter '%s' received the value '%s', which is an invalid type."
+				+ " Correct and enter a value compatible with type 'Long'", e.getName(), e.getValue());
+		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.INVALID_PARAMETER, detail);
+		
+		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
 	@Override
@@ -91,6 +102,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 	
 	@Override
+	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException e, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		String detail = String.format("The resource '%s' you tried to access does not exist.", e.getRequestURL());
+		Problem problem = handleProblem(status, ProblemType.RESOURCE_NOT_FOUND, detail);
+		return handleExceptionInternal(e, problem, headers, status, request);
+	}
+	
+	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		
@@ -105,4 +124,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	private Problem handleProblem(HttpStatus status, ProblemType problemType, String detail) {
 		return new Problem(status.value(), problemType.getUri(), problemType.getTitle(), detail);
 	}
+	
+	
 }
