@@ -1,5 +1,6 @@
 package projeto.redes2.project.exceptionhandler;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -29,26 +30,26 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	@ExceptionHandler()
 	public ResponseEntity<?> handleEntityNotFoundInTheAppeal(EntityNotFoundInTheAppeal e, WebRequest request){
-		Problem problem = handleProblem(STTS_NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, e.getMessage());	
+		Problem problem = handleProblem( STTS_NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, e.getMessage(), UserMessageProblem.SYSTEM_ERROR.getUserMessage());	
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_NOT_FOUND, request);
 	}
 	
 	@ExceptionHandler()
 	public ResponseEntity<?> handleEntityNotFound(EntityNotFound e, WebRequest request){
-		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.RESOURCE_NOT_FOUND, e.getMessage());
+		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.RESOURCE_NOT_FOUND, e.getMessage(), UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
 	//MUDAR NO REPOSITORIO, CRIAR QUERY PARA VERIFICAR NOME COM ID DO USUARIO
 	@ExceptionHandler()
 	public ResponseEntity<?> handleEntityAlreadyExists(EntityAlreadyExists e, WebRequest request){
-		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_ALREADY_EXISTS, e.getMessage());
+		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_ALREADY_EXISTS, e.getMessage(), e.getMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
 	@ExceptionHandler()
 	public ResponseEntity<?> handleEntityInUse(EntityInUse e, WebRequest request){
-		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_IN_USE, e.getMessage());
+		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_IN_USE, e.getMessage(), UserMessageProblem.ENTITY_IN_USE.getUserMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
@@ -56,7 +57,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	public ResponseEntity<?> handlePropertyNotExists(PropertyNotExist e, WebRequest request){
 		if(e.getCause() instanceof DataIntegrityViolationException)
 			System.out.println(e.getCause());
-		Problem problem = handleProblem(STTS_CONFLICT, ProblemType.PROPERTY_NOT_EXIST, e.getMessage());
+		Problem problem = handleProblem(STTS_CONFLICT, ProblemType.PROPERTY_NOT_EXIST, e.getMessage(), UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_CONFLICT, request);
 	}
 	
@@ -64,7 +65,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, WebRequest request){
 		String detail = String.format("The URl parameter '%s' received the value '%s', which is an invalid type."
 				+ " Correct and enter a value compatible with type 'Long'", e.getName(), e.getValue());
-		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.INVALID_PARAMETER, detail);
+		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.INVALID_PARAMETER, detail, UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
@@ -79,7 +80,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		}else if(rootCause instanceof PropertyBindingException) { //valor da propriedade de algum atributo que não existe
 			return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
 		}
-		Problem problem = handleProblem(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, "The request body is invalid. Check syntax error.");
+		Problem problem = handleProblem(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, "The request body is invalid. Check syntax error.", UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
 	}
 	
@@ -87,7 +88,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		String path = e.getPath().stream().map(p -> p.getFieldName()).collect(Collectors.joining("."));
 		String detail = String.format("Property '%s' does not exist. Correct and enter a valid property.", path);
 		
-		Problem problem = handleProblem(status, ProblemType.PROPERTY_NOT_EXIST, detail);
+		Problem problem = handleProblem(status, ProblemType.PROPERTY_NOT_EXIST, detail, UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, headers, status, request);
 	}
 
@@ -97,7 +98,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		String detail = String.format("Property '%s' received value '%s', which is of invalid type. Correct and enter a value compatible with type '%s'."
 				, path, e.getValue(), e.getTargetType().getSimpleName());
 		
-		Problem problem = handleProblem(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail);
+		Problem problem = handleProblem(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail, UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, headers, status, request);
 	}
 	
@@ -105,7 +106,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException e, HttpHeaders headers,
 			HttpStatus status, WebRequest request) {
 		String detail = String.format("The resource '%s' you tried to access does not exist.", e.getRequestURL());
-		Problem problem = handleProblem(status, ProblemType.RESOURCE_NOT_FOUND, detail);
+		Problem problem = handleProblem(status, ProblemType.RESOURCE_NOT_FOUND, detail, UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, headers, status, request);
 	}
 	
@@ -114,15 +115,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 			HttpStatus status, WebRequest request) {
 		
 		if(body == null) {
-			body = new Problem(status.value(), null, status.getReasonPhrase(), null);			
+			body = new Problem(LocalDateTime.now(), status.value(), null, status.getReasonPhrase(), null, null);			
 		}else if(body instanceof String) {
-			body = new Problem(status.value(), null, (String) body, null);
+			body = new Problem(LocalDateTime.now(), status.value(), null, (String) body, null, null);
 		}
 		return super.handleExceptionInternal(ex, body, headers, status, request);
 	}
 	
-	private Problem handleProblem(HttpStatus status, ProblemType problemType, String detail) {
-		return new Problem(status.value(), problemType.getUri(), problemType.getTitle(), detail);
+	private Problem handleProblem(HttpStatus status, ProblemType problemType, String detail, String userMessage) {
+		return new Problem(LocalDateTime.now(), status.value(), problemType.getUri(), problemType.getTitle(), detail, userMessage);
 	}
 	
 	
