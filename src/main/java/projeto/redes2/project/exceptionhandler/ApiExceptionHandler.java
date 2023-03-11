@@ -69,7 +69,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
-	
+
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException e,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -93,7 +93,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 
 	public ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e, HttpHeaders headers, HttpStatus status, WebRequest request){
-		
 		String path = e.getPath().stream().map(p -> p.getFieldName()).collect(Collectors.joining("."));		
 		String detail = String.format("Property '%s' received value '%s', which is of invalid type. Correct and enter a value compatible with type '%s'."
 				, path, e.getValue(), e.getTargetType().getSimpleName());
@@ -121,6 +120,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		}
 		return super.handleExceptionInternal(ex, body, headers, status, request);
 	}
+	
+	
 	
 	private Problem handleProblem(HttpStatus status, ProblemType problemType, String detail, String userMessage) {
 		return new Problem(LocalDateTime.now(), status.value(), problemType.getUri(), problemType.getTitle(), detail, userMessage);

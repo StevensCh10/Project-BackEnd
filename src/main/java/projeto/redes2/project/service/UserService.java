@@ -2,7 +2,6 @@ package projeto.redes2.project.service;
 
 import java.lang.reflect.Field;
 import java.util.Map;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class UserService {
 	}
 	
 	public User find(Long id) {
-		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("usuário com id %d não está cadastrado!", id)));
+		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User '%s' not unregistered.", id)));
 	}
 
 	public User checkLogin(String userName, String password) {

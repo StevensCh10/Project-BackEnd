@@ -1,7 +1,6 @@
 package projeto.redes2.project.exceptionhandler;
 
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
