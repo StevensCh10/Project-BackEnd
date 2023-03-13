@@ -69,6 +69,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<Object> handleExceptionCustom(Exception e, WebRequest request){
+		Problem problem = handleProblem(HttpStatus.INTERNAL_SERVER_ERROR, ProblemType.INTERNAL_SERVER_ERROR, UserMessageProblem.SYSTEM_ERROR.getUserMessage()
+				, UserMessageProblem.SYSTEM_ERROR.getUserMessage());
+		return handleExceptionInternal(e, problem, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
 
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException e,

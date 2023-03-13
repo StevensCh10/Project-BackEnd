@@ -31,9 +31,6 @@ public class LoginResource {
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
 	public User registerUser(@RequestBody User user){
-		/* if(true) {
-			throw new IllegalArgumentException("Teste");  PARA TESTAR POSTERIORMENTE EXCEPTIONS QUE NÃO ESTÃO SENDO TRATADAS
-		}*/
 		return userService.register(user);
 	}
 }

@@ -11,7 +11,8 @@ public enum ProblemType {
 	ENTITY_ALREADY_EXISTS("/entity-already-exists", "Entity already exists"),
 	PROPERTY_NOT_EXIST("/property-not-exist", "Property not exist"),
 	INCOMPREHENSIBLE_MESSAGE("/incomprehensible-message","Incomprehensible message"),
-	INVALID_PARAMETER("/invalid-parameter","Invalid Parameter");
+	INVALID_PARAMETER("/invalid-parameter","Invalid Parameter"),
+	INTERNAL_SERVER_ERROR("/internal-server-error","Internal server error");
 	
 	private String title;
 	private String uri;
