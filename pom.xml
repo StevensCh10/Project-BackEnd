@@ -57,14 +57,17 @@
 		</dependency>
 		<!-- DEPENDENCIA PARA SUPORTE A ENVIO XML
 		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>S
 			<artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
 		-->
 		<dependency>
 		  <groupId>org.apache.commons</groupId>
 		  <artifactId>commons-lang3</artifactId>
-		  <version>3.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
 		</dependency>
 	</dependencies>
 
