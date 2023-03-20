@@ -8,12 +8,12 @@ import projeto.redes2.project.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	@Query(
-			value = "SELECT * FROM user WHERE userName = :userName AND password = :password",
+			value = "SELECT * FROM user WHERE username = :username AND password = :password",
 			nativeQuery = true
 	)
-	public User checkLogin(@Param("userName") String userName, @Param("password") String password);
+	public User checkLogin(@Param("username") String username, @Param("password") String password);
 	
-	public User findByUserName(String userName);
+	public User findByUsername(String username);
 	
 	@Query(
 			value = "SELECT * FROM user WHERE name =:name",

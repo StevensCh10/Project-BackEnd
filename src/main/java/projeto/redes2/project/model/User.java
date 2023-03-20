@@ -33,9 +33,8 @@ public class User implements Serializable{
 	@Column(length = 50, nullable = false, unique = true)
 	private String email;
 	
-	//hibernate por algum motivo quando vai fazer consultas está usando esse campo como "user_name", nome antigo, e por isso da erro
-	@Column(name = "userName",length = 50, nullable = false)
-	private String userName;
+	@Column(length = 50, nullable = false)
+	private String username;
 	
 	@Column(length = 50, nullable = false)
 	private String password;

@@ -47,8 +47,8 @@ public class ProjectService {
 	}
 	
 	public Project add(Project p) {
+		System.out.println(p);
 		Long userID = p.getUser().getId();
-			
 		if(repository.findByName(p.getName(), userID) == null) {		
 			User user = findUser(userID);
 			p.setUser(user);

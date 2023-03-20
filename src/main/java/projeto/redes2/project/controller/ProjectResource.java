@@ -42,6 +42,7 @@ public class ProjectResource {
 		return ResponseEntity.ok(projects);
 	}
 	
+	//Erro ao adicionar um projeto, não estou conseguindo capturar o id do user do project
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
 	public Project add(@RequestBody Project receivedProject){	

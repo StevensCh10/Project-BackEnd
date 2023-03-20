@@ -30,7 +30,7 @@ public class UserService {
 		User user = repository.checkLogin(userName, password);
 		
 		if(user == null) {
-			if(repository.findByUserName(userName) == null) {
+			if(repository.findByUsername(userName) == null) {
 				throw new EntityNotFoundInTheAppeal(String.format("User '%s' not unregistered.", userName));
 			}
 			throw new EntityNotFoundInTheAppeal("Incorret password.");
