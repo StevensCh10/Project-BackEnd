@@ -8,9 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,7 +42,7 @@ public class Project implements Serializable{
 	
 	//@ManyToOne(fetch = FetchType.LAZY)
 	//@JsonIgnoreProperties({hibernateLazyInitializer})
-	@JsonIgnore
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //Informando que o atributo pode ser escrito na desserialização mas não é lido na serialização.
 	@ManyToOne
 	@JoinColumn(name = "fk_user")
 	private User user;
