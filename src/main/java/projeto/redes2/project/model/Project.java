@@ -8,22 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
 @NoArgsConstructor
-@Data      //(já vem com @Getter, @Setter, @EqualsAndHashCode e @ToString
+@Data
 @Entity
 public class Project implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -31,6 +30,7 @@ public class Project implements Serializable{
 	@Column(nullable = false, updatable = false)
 	private Long id;
 	
+	@NotNull
 	@Column(length = 50, nullable = false, unique = true)
 	private String name;
 	

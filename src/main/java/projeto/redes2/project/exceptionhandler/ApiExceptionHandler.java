@@ -28,32 +28,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	private final HttpStatus STTS_BAD_REQUEST = HttpStatus.BAD_REQUEST;
 	private final HttpStatus STTS_CONFLICT = HttpStatus.CONFLICT;
 	
-	@ExceptionHandler()
+	@ExceptionHandler(EntityNotFoundInTheAppeal.class)
 	public ResponseEntity<?> handleEntityNotFoundInTheAppeal(EntityNotFoundInTheAppeal e, WebRequest request){
 		Problem problem = handleProblem( STTS_NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, e.getMessage(), UserMessageProblem.SYSTEM_ERROR.getUserMessage());	
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_NOT_FOUND, request);
 	}
 	
-	@ExceptionHandler()
+	@ExceptionHandler(EntityNotFound.class)
 	public ResponseEntity<?> handleEntityNotFound(EntityNotFound e, WebRequest request){
 		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.RESOURCE_NOT_FOUND, e.getMessage(), UserMessageProblem.SYSTEM_ERROR.getUserMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
 	//MUDAR NO REPOSITORIO, CRIAR QUERY PARA VERIFICAR NOME COM ID DO USUARIO
-	@ExceptionHandler()
+	@ExceptionHandler(EntityAlreadyExists.class)
 	public ResponseEntity<?> handleEntityAlreadyExists(EntityAlreadyExists e, WebRequest request){
 		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_ALREADY_EXISTS, e.getMessage(), e.getMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
-	@ExceptionHandler()
+	@ExceptionHandler(EntityInUse.class)
 	public ResponseEntity<?> handleEntityInUse(EntityInUse e, WebRequest request){
 		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.ENTITY_IN_USE, e.getMessage(), UserMessageProblem.ENTITY_IN_USE.getUserMessage());
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 	
-	@ExceptionHandler()
+	@ExceptionHandler(PropertyNotExist.class)
 	public ResponseEntity<?> handlePropertyNotExists(PropertyNotExist e, WebRequest request){
 		if(e.getCause() instanceof DataIntegrityViolationException)
 			System.out.println(e.getCause());

@@ -3,6 +3,8 @@ package projeto.redes2.project.controller;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,7 +47,7 @@ public class ProjectResource {
 	//Erro ao adicionar um projeto, não estou conseguindo capturar o id do user do project
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public Project add(@RequestBody Project receivedProject){	
+	public Project add(@RequestBody @Valid Project receivedProject){	
 		return service.add(receivedProject);	
 	}
 	
