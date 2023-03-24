@@ -142,8 +142,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		return super.handleExceptionInternal(ex, body, headers, status, request);
 	}
 	
-	
-	
 	private Problem handleProblem(HttpStatus status, ProblemType problemType, String detail, String userMessage) {
 		return new Problem(LocalDateTime.now(), status.value(), problemType.getUri(), problemType.getTitle(), detail, userMessage, null);
 	}

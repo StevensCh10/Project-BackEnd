@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,11 +32,11 @@ public class Project implements Serializable{
 	@Column(nullable = false, updatable = false)
 	private Long id;
 	
-	@NotNull
+	@NotBlank
 	@Column(length = 50, nullable = false, unique = true)
 	private String name;
 	
-	@NotNull
+	@NotBlank
 	@Column(length = 120, nullable = false)
 	private String description;
 	
