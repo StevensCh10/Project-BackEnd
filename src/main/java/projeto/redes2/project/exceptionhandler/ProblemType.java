@@ -12,7 +12,9 @@ public enum ProblemType {
 	PROPERTY_NOT_EXIST("/property-not-exist", "Property not exist"),
 	INCOMPREHENSIBLE_MESSAGE("/incomprehensible-message","Incomprehensible message"),
 	INVALID_PARAMETER("/invalid-parameter","Invalid Parameter"),
-	INTERNAL_SERVER_ERROR("/internal-server-error","Internal server error");
+	INTERNAL_SERVER_ERROR("/internal-server-error","Internal server error"),
+	INVALID_DATA("/invalid-data","Invalid Data");
+	//Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.
 	
 	private String title;
 	private String uri;

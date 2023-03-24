@@ -32,8 +32,7 @@ public class ProjectResource {
 		this.service = projectService;
 	}
 	
-	@GetMapping("/{id}")
-	//@ResponseStatus(HttpStatus.OK) - PADRÃO 200 
+	@GetMapping("/{id}") 
 	public Project get(@PathVariable Long id){
 		return service.find(id);			
 	}
@@ -44,7 +43,6 @@ public class ProjectResource {
 		return ResponseEntity.ok(projects);
 	}
 	
-	//Erro ao adicionar um projeto, não estou conseguindo capturar o id do user do project
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
 	public Project add(@RequestBody @Valid Project receivedProject){	

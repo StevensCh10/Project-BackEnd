@@ -6,6 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import projeto.redes2.project.exceptions.EntityAlreadyExists;
 import projeto.redes2.project.exceptions.EntityInUse;
@@ -50,6 +52,7 @@ public class UserService {
 		User userDestiny = find(id);
 		
 		ObjectMapper objMapper = new ObjectMapper();
+		objMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 		User userFields = objMapper.convertValue(fields, User.class);
 		
 		fields.forEach((propertyName, propertyValue) -> {
