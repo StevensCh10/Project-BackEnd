@@ -34,9 +34,11 @@ public class Project implements Serializable{
 	@Column(length = 50, nullable = false, unique = true)
 	private String name;
 	
+	@NotNull
 	@Column(length = 120, nullable = false)
 	private String description;
 	
+	@NotNull
 	@Column(length = 1, nullable = false) 
 	private Boolean situation;
 	

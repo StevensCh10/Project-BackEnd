@@ -1,6 +1,7 @@
 package projeto.redes2.project.exceptionhandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -81,8 +82,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		List<Problem.Field> problemFields = e.getBindingResult().getFieldErrors().stream()
+				.map(fieldError -> new Problem.Field(fieldError.getField(), fieldError.getDefaultMessage()))
+				.collect(Collectors.toList());
+		
 		String detail = "One or more fields are invalid. Fill in correctly and try again.";
-		Problem problem = handleProblem(STTS_BAD_REQUEST, ProblemType.INVALID_DATA, detail, detail);
+		Problem problem = handleProblemWithProblemFields(STTS_BAD_REQUEST, ProblemType.INVALID_DATA, detail, detail, problemFields);
 		return handleExceptionInternal(e, problem, new HttpHeaders(), STTS_BAD_REQUEST, request);
 	}
 
@@ -130,9 +135,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 			HttpStatus status, WebRequest request) {
 		
 		if(body == null) {
-			body = new Problem(LocalDateTime.now(), status.value(), null, status.getReasonPhrase(), null, null);			
+			body = new Problem(LocalDateTime.now(), status.value(), null, status.getReasonPhrase(), null, null, null);			
 		}else if(body instanceof String) {
-			body = new Problem(LocalDateTime.now(), status.value(), null, (String) body, null, null);
+			body = new Problem(LocalDateTime.now(), status.value(), null, (String) body, null, null, null);
 		}
 		return super.handleExceptionInternal(ex, body, headers, status, request);
 	}
@@ -140,8 +145,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	
 	private Problem handleProblem(HttpStatus status, ProblemType problemType, String detail, String userMessage) {
-		return new Problem(LocalDateTime.now(), status.value(), problemType.getUri(), problemType.getTitle(), detail, userMessage);
+		return new Problem(LocalDateTime.now(), status.value(), problemType.getUri(), problemType.getTitle(), detail, userMessage, null);
 	}
 	
-	
+	private Problem handleProblemWithProblemFields(HttpStatus status, ProblemType problemType, String detail, String userMessage, List<Problem.Field> problemFields) {
+		return new Problem(LocalDateTime.now(), status.value(), problemType.getUri(), problemType.getTitle(), detail, userMessage, problemFields);
+	}
 }
