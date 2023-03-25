@@ -43,9 +43,13 @@ public class UserService {
 	public User register(User user) {
 		System.out.println(repository.findByName(user.getName()));
 		if(repository.findByName(user.getName()) == null) {
+			System.out.println(repository.findByEmail(user.getEmail()));
+			if(repository.findByEmail(user.getEmail()) != null) {
+				throw new EntityAlreadyExists(String.format("Email '%s' is already registered.", user.getEmail()));
+			}
 			return repository.save(user);			
 		}
-		throw new EntityAlreadyExists(String.format("Name '%s' entered unavailable.", user.getName()));
+		throw new EntityAlreadyExists(String.format("Name '%s' unavailable.", user.getName()));
 	}
 	
 	public User updatePartial(Map<String, Object> fields, Long id) {
