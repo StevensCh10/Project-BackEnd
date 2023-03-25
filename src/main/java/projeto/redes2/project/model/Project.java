@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,22 +34,23 @@ public class Project implements Serializable{
 	@Column(nullable = false, updatable = false)
 	private Long id;
 	
-	@NotBlank(groups = Groups.GroupCreateProject.class)
+	@NotBlank
 	@Column(length = 50, nullable = false, unique = true)
 	private String name;
 	
-	@NotBlank(groups = Groups.GroupCreateProject.class)
+	@NotBlank
 	@Column(length = 120, nullable = false)
 	private String description;
 	
-	@NotNull(groups = Groups.GroupCreateProject.class)
+	@NotNull
 	@Column(length = 1, nullable = false) 
 	private Boolean situation;
 	
 	//@ManyToOne(fetch = FetchType.LAZY)
 	//@JsonIgnoreProperties({hibernateLazyInitializer})
 	@Valid
-	@NotNull(groups = Groups.GroupCreateProject.class)
+	@ConvertGroup(from = Default.class, to = Groups.GroupUserId.class)
+	@NotNull
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //Informando que o atributo pode ser escrito na desserialização mas não é lido na serialização.
 	@ManyToOne
 	@JoinColumn(name = "fk_user")

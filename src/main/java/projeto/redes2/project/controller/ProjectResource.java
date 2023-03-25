@@ -3,9 +3,9 @@ package projeto.redes2.project.controller;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import projeto.redes2.project.Groups;
 import projeto.redes2.project.model.Project;
 import projeto.redes2.project.service.ProjectService;
 
@@ -45,7 +44,7 @@ public class ProjectResource {
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public Project add(@RequestBody @Validated(Groups.GroupCreateProject.class) Project receivedProject){	
+	public Project add(@RequestBody @Valid Project receivedProject){	
 		return service.add(receivedProject);	
 	}
 	

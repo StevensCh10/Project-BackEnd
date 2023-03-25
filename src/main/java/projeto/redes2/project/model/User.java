@@ -25,7 +25,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@NotNull(groups = Groups.GroupCreateProject.class)
+	@NotNull(groups = Groups.GroupUserId.class)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	private Long id;
