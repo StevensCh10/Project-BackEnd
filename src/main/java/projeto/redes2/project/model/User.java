@@ -9,10 +9,11 @@ import javax.persistence.Id;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import projeto.redes2.project.Groups;
 
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
@@ -24,6 +25,7 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@NotNull(groups = Groups.GroupCreateProject.class)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	private Long id;
@@ -32,7 +34,7 @@ public class User implements Serializable{
 	@Column(length = 50, nullable = false, unique=true)
 	private String name;
 	
-	@NotBlank
+	@NotNull
 	@DecimalMin("10")
 	@Column(nullable = false)
 	private int age;

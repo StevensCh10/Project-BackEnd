@@ -1,5 +1,7 @@
 package projeto.redes2.project.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class LoginResource {
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public User registerUser(@RequestBody User user){
+	public User registerUser(@RequestBody @Valid User user){
 		return userService.register(user);
 	}
 }

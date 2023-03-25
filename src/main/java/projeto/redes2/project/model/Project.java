@@ -8,15 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import projeto.redes2.project.Groups;
 
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @AllArgsConstructor
@@ -32,20 +31,22 @@ public class Project implements Serializable{
 	@Column(nullable = false, updatable = false)
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(groups = Groups.GroupCreateProject.class)
 	@Column(length = 50, nullable = false, unique = true)
 	private String name;
 	
-	@NotBlank
+	@NotBlank(groups = Groups.GroupCreateProject.class)
 	@Column(length = 120, nullable = false)
 	private String description;
 	
-	@NotNull
+	@NotNull(groups = Groups.GroupCreateProject.class)
 	@Column(length = 1, nullable = false) 
 	private Boolean situation;
 	
 	//@ManyToOne(fetch = FetchType.LAZY)
 	//@JsonIgnoreProperties({hibernateLazyInitializer})
+	@Valid
+	@NotNull(groups = Groups.GroupCreateProject.class)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //Informando que o atributo pode ser escrito na desserialização mas não é lido na serialização.
 	@ManyToOne
 	@JoinColumn(name = "fk_user")
