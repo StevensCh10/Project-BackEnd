@@ -3,6 +3,10 @@ package projeto.redes2.project.exceptionhandler;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +33,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	private final HttpStatus STTS_NOT_FOUND = HttpStatus.NOT_FOUND;
 	private final HttpStatus STTS_BAD_REQUEST = HttpStatus.BAD_REQUEST;
 	private final HttpStatus STTS_CONFLICT = HttpStatus.CONFLICT;
+	
+	@Autowired 
+	private MessageSource messageSource;
 	
 	@ExceptionHandler(EntityNotFoundInTheAppeal.class)
 	public ResponseEntity<?> handleEntityNotFoundInTheAppeal(EntityNotFoundInTheAppeal e, WebRequest request){
@@ -83,7 +90,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		List<Problem.Field> problemFields = e.getBindingResult().getFieldErrors().stream()
-				.map(fieldError -> new Problem.Field(fieldError.getField(), fieldError.getDefaultMessage()))
+				.map(fieldError -> {
+					String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+					return new Problem.Field(fieldError.getField(), message);
+				})
 				.collect(Collectors.toList());
 		
 		String detail = "One or more fields are invalid. Fill in correctly and try again.";
