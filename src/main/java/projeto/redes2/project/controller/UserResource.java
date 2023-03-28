@@ -1,6 +1,7 @@
 package projeto.redes2.project.controller;
 
 import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +32,7 @@ public class UserResource {
 	}
 	
 	@PutMapping("/{id}")
-	public User update(@RequestBody User userAtt, @PathVariable Long id) {
+	public User update(@RequestBody @Valid User userAtt, @PathVariable Long id) {
 		return service.update(userAtt, id);
 	}
 	

@@ -54,7 +54,7 @@ public class ProjectResource {
 	}
 	
 	@PutMapping("/{id}")
-	public Project update(@RequestBody Project projectAtt, @PathVariable Long id){
+	public Project update(@RequestBody @Valid Project projectAtt, @PathVariable Long id){
 		return service.update(projectAtt, id);
 	}
 	
