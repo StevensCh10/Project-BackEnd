@@ -1,4 +1,4 @@
-package projeto.redes2.project.service;
+package projeto.redes2.project.services;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ import projeto.redes2.project.exceptions.EntityAlreadyExists;
 import projeto.redes2.project.exceptions.EntityInUse;
 import projeto.redes2.project.exceptions.EntityNotFound;
 import projeto.redes2.project.exceptions.EntityNotFoundInTheAppeal;
-import projeto.redes2.project.model.Project;
-import projeto.redes2.project.model.User;
-import projeto.redes2.project.repository.ProjectRepository;
-import projeto.redes2.project.repository.UserRepository;
+import projeto.redes2.project.models.Project;
+import projeto.redes2.project.models.User;
+import projeto.redes2.project.repositories.ProjectRepository;
+import projeto.redes2.project.repositories.UserRepository;
 
 @Service
 public class ProjectService {
@@ -47,7 +47,6 @@ public class ProjectService {
 	}
 	
 	public Project add(Project p) {
-		System.out.println(p);
 		Long userID = p.getUser().getId();
 		if(repository.findByName(p.getName(), userID) == null) {		
 			User user = findUser(userID);

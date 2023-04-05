@@ -1,10 +1,11 @@
-package projeto.redes2.project.repository;
+package projeto.redes2.project.repositories;
 
 import java.util.ArrayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import projeto.redes2.project.model.Project;
+
+import projeto.redes2.project.models.Project;
 
 public interface ProjectRepository extends JpaRepository<Project, Long>{
 	

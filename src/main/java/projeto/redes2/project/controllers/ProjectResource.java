@@ -1,4 +1,4 @@
-package projeto.redes2.project.controller;
+package projeto.redes2.project.controllers;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import projeto.redes2.project.model.Project;
-import projeto.redes2.project.service.ProjectService;
+import projeto.redes2.project.models.Project;
+import projeto.redes2.project.services.ProjectService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

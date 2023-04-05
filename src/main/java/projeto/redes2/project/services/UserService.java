@@ -1,4 +1,4 @@
-package projeto.redes2.project.service;
+package projeto.redes2.project.services;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import projeto.redes2.project.exceptions.EntityAlreadyExists;
 import projeto.redes2.project.exceptions.EntityInUse;
 import projeto.redes2.project.exceptions.EntityNotFoundInTheAppeal;
-import projeto.redes2.project.model.User;
-import projeto.redes2.project.repository.UserRepository;
+import projeto.redes2.project.models.User;
+import projeto.redes2.project.repositories.UserRepository;
 
 @Service
 public class UserService {
@@ -41,9 +41,7 @@ public class UserService {
 	}
 		
 	public User register(User user) {
-		System.out.println(repository.findByName(user.getName()));
 		if(repository.findByName(user.getName()) == null) {
-			System.out.println(repository.findByEmail(user.getEmail()));
 			if(repository.findByEmail(user.getEmail()) != null) {
 				throw new EntityAlreadyExists(String.format("Email '%s' is already registered.", user.getEmail()));
 			}
@@ -81,11 +79,12 @@ public class UserService {
 	}
 
 	public void delete(Long id) {
+		System.out.println("OPA");
 		try {
 			find(id);
 			repository.deleteById(id);		
 		}catch(DataIntegrityViolationException e) {
-			throw new EntityInUse(String.format("Project with id %d cannot be deleted as it is in use.", id));
+			throw new EntityInUse(String.format("User with id %d cannot be deleted as it is in use.", id));
 		}
 	}
 }

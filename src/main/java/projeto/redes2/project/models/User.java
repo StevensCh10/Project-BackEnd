@@ -1,4 +1,4 @@
-package projeto.redes2.project.model;
+package projeto.redes2.project.models;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -52,5 +52,4 @@ public class User implements Serializable{
 	@NotBlank
 	@Column(length = 50, nullable = false)
 	private String password;
-
 }
