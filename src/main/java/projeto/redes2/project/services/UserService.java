@@ -3,6 +3,7 @@ package projeto.redes2.project.services;
 import java.lang.reflect.Field;
 import java.util.Map;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -18,12 +19,9 @@ import projeto.redes2.project.repositories.UserRepository;
 @Service
 public class UserService {
 	
-	private final UserRepository repository;
+	@Autowired
+	private UserRepository repository;
 
-	public UserService(UserRepository userRepository) {
-		this.repository = userRepository;
-	}
-	
 	public User find(Long id) {
 		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User '%s' not unregistered.", id)));
 	}
