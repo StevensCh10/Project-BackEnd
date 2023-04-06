@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +47,7 @@ public class ProjectService {
 		return userRepository.findById(id).orElseThrow(() -> new EntityNotFound(String.format("User with id %d is not registered.", id)));
 	}
 	
+	@Transactional
 	public Project add(Project p) {
 		Long userID = p.getUser().getId();
 		if(repository.findByName(p.getName(), userID) == null) {		
@@ -56,6 +58,7 @@ public class ProjectService {
 		throw new EntityAlreadyExists(String.format("There is already a project called '%s'.", p.getName()));		
 	} 
 	
+	@Transactional
 	public Project updatePartial(Map<String, Object> fields, Long id, HttpServletRequest request) {
 		try {
 			Project projectDestiny = find(id);
@@ -80,6 +83,7 @@ public class ProjectService {
 		}		
 	}
 	
+	@Transactional
 	public Project update(Project projectAtt, Long id) {
 		Project currentProject = find(id);
 		Long userID = projectAtt.getUser().getId();
@@ -95,6 +99,7 @@ public class ProjectService {
 		return repository.saveAndFlush(currentProject);
 	}
 	
+	@Transactional
 	public void delete(Long id) {
 		try {
 			find(id);

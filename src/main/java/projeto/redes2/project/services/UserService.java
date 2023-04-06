@@ -6,8 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import projeto.redes2.project.exceptions.EntityAlreadyExists;
@@ -38,6 +38,7 @@ public class UserService {
 		return user;
 	}
 		
+	@Transactional
 	public User register(User user) {
 		if(repository.findByName(user.getName()) == null) {
 			if(repository.findByEmail(user.getEmail()) != null) {
@@ -48,6 +49,7 @@ public class UserService {
 		throw new EntityAlreadyExists(String.format("Name '%s' unavailable.", user.getName()));
 	}
 	
+	@Transactional
 	public User updatePartial(Map<String, Object> fields, Long id) {
 		User userDestiny = find(id);
 		
@@ -65,6 +67,7 @@ public class UserService {
 		return repository.save(userDestiny);		
 	}
 	
+	@Transactional
 	public User update(User userAtt, Long id) {
 		User currentUser = find(id);
 		User find = repository.findByName(userAtt.getName());
@@ -76,6 +79,7 @@ public class UserService {
 		return repository.saveAndFlush(currentUser);
 	}
 
+	@Transactional
 	public void delete(Long id) {
 		System.out.println("OPA");
 		try {
