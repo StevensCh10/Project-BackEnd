@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,7 +48,7 @@ public class Project implements Serializable{
 	private Boolean situation;
 	
 	//@ManyToOne(fetch = FetchType.LAZY)
-	//@JsonIgnoreProperties({hibernateLazyInitializer})
+	@JsonIgnoreProperties(value = {"name", "age", "email", "username", "password"}, allowGetters = true)
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.GroupUserId.class)
 	@NotNull
