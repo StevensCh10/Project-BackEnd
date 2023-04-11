@@ -1,4 +1,4 @@
-package projeto.redes2.project.models;
+package projeto.redes2.project.model;
 
 import java.io.Serializable;
 import javax.persistence.Column;

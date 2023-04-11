@@ -1,4 +1,4 @@
-package projeto.redes2.project.services;
+package projeto.redes2.project.service;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import projeto.redes2.project.exceptions.EntityAlreadyExists;
-import projeto.redes2.project.exceptions.EntityInUse;
-import projeto.redes2.project.exceptions.EntityNotFoundInTheAppeal;
-import projeto.redes2.project.models.User;
-import projeto.redes2.project.repositories.UserRepository;
+
+import projeto.redes2.project.exception.EntityAlreadyExists;
+import projeto.redes2.project.exception.EntityInUse;
+import projeto.redes2.project.exception.EntityNotFoundInTheAppeal;
+import projeto.redes2.project.model.User;
+import projeto.redes2.project.repository.UserRepository;
 
 @Service
 public class UserService {

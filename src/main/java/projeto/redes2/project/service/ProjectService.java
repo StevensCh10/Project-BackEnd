@@ -1,4 +1,4 @@
-package projeto.redes2.project.services;
+package projeto.redes2.project.service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -15,14 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import projeto.redes2.project.exceptions.EntityAlreadyExists;
-import projeto.redes2.project.exceptions.EntityInUse;
-import projeto.redes2.project.exceptions.EntityNotFound;
-import projeto.redes2.project.exceptions.EntityNotFoundInTheAppeal;
-import projeto.redes2.project.models.Project;
-import projeto.redes2.project.models.User;
-import projeto.redes2.project.repositories.ProjectRepository;
-import projeto.redes2.project.repositories.UserRepository;
+
+import projeto.redes2.project.exception.EntityAlreadyExists;
+import projeto.redes2.project.exception.EntityInUse;
+import projeto.redes2.project.exception.EntityNotFound;
+import projeto.redes2.project.exception.EntityNotFoundInTheAppeal;
+import projeto.redes2.project.model.Project;
+import projeto.redes2.project.model.User;
+import projeto.redes2.project.repository.ProjectRepository;
+import projeto.redes2.project.repository.UserRepository;
 
 @Service
 public class ProjectService {

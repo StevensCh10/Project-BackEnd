@@ -1,4 +1,4 @@
-package projeto.redes2.project.exceptions;
+package projeto.redes2.project.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

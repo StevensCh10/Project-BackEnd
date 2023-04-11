@@ -5,10 +5,11 @@ import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import projeto.redes2.project.exceptions.EntityAlreadyExists;
-import projeto.redes2.project.exceptions.EntityInUse;
-import projeto.redes2.project.models.User;
-import projeto.redes2.project.services.UserService;
+
+import projeto.redes2.project.exception.EntityAlreadyExists;
+import projeto.redes2.project.exception.EntityInUse;
+import projeto.redes2.project.model.User;
+import projeto.redes2.project.service.UserService;
 
 @SpringBootTest
 class UserTests {

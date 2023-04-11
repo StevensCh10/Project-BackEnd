@@ -21,11 +21,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
-import projeto.redes2.project.exceptions.EntityAlreadyExists;
-import projeto.redes2.project.exceptions.EntityInUse;
-import projeto.redes2.project.exceptions.EntityNotFound;
-import projeto.redes2.project.exceptions.EntityNotFoundInTheAppeal;
-import projeto.redes2.project.exceptions.PropertyNotExist;
+
+import projeto.redes2.project.exception.EntityAlreadyExists;
+import projeto.redes2.project.exception.EntityInUse;
+import projeto.redes2.project.exception.EntityNotFound;
+import projeto.redes2.project.exception.EntityNotFoundInTheAppeal;
+import projeto.redes2.project.exception.PropertyNotExist;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{

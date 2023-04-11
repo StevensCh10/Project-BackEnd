@@ -1,4 +1,4 @@
-package projeto.redes2.project.controllers;
+package projeto.redes2.project.controller;
 
 import java.util.Map;
 import javax.validation.Valid;
@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import projeto.redes2.project.models.User;
-import projeto.redes2.project.services.UserService;
+
+import projeto.redes2.project.model.User;
+import projeto.redes2.project.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/user")
-public class UserResource {
+public class UserController {
 	
 	private final UserService service;
 	
-	public UserResource(UserService userService) {
+	public UserController(UserService userService) {
 		this.service = userService;
 	}	
 	

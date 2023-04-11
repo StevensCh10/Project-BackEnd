@@ -1,4 +1,4 @@
-package projeto.redes2.project.controllers;
+package projeto.redes2.project.controller;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,17 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import projeto.redes2.project.models.Project;
-import projeto.redes2.project.services.ProjectService;
+
+import projeto.redes2.project.model.Project;
+import projeto.redes2.project.service.ProjectService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/project")
-public class ProjectResource {
+public class ProjectController {
 	
 	private final ProjectService service;
 	
-	public ProjectResource(ProjectService projectService) {
+	public ProjectController(ProjectService projectService) {
 		this.service = projectService;
 	}
 	
