@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import projeto.redes2.project.exception.EntityAlreadyExists;
 import projeto.redes2.project.exception.EntityInUse;
+import projeto.redes2.project.model.Role;
 import projeto.redes2.project.model.User;
 import projeto.redes2.project.service.UserService;
 
@@ -20,7 +21,7 @@ class UserTests {
 	@Test
 	void mustFail_whenUserWithoutNameIsRegistered() {
 		assertThrows(ConstraintViolationException.class, () -> {
-			User user = new User(null, null, 22, "test001@outlook.com", "testUsername001", "testPassword001");
+			User user = new User(null, null, 22, "test001@outlook.com", "testUsername001", "testPassword001", Role.USER);
 			service.register(user);
 		});
 	}
@@ -28,7 +29,7 @@ class UserTests {
 	@Test
 	void mustFail_whenRegisteredUserWithEmailInUse() {
 		assertThrows(EntityAlreadyExists.class, () -> {
-			User user = new User(null, "testName002", 22, "stevensch10@outlook.com", "testUsername002", "testPassword002");
+			User user = new User(null, "testName002", 22, "stevensch10@outlook.com", "testUsername002", "testPassword002", Role.USER);
 			service.register(user);
 		});
 	}
