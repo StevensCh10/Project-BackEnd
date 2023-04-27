@@ -16,8 +16,8 @@ Tópicos e ferramentas usadas no projeto:
   - Flyway para versionamento de schemas do banco de dados
   - Tratamento e personalização de exceções usando a especificação RFC 7807
   - Constraints de validações (utilizando o Resouce Bundle do Spring validation para personalizar mensagens)
-  
+- Spring security e JWT (Ainda estudando para melhor implementação)
+
 Tópicos e ferramentas que serão adicionadas no projeto: 
   
-  - Spring security e JWT
   - Swagger
