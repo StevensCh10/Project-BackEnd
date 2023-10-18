@@ -1,10 +1,12 @@
-package projeto.redes2.project;
+package projeto.redes2.project.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableWebMvc
 public class CorsConfiguration implements WebMvcConfigurer {
 
     @Override
@@ -12,5 +14,8 @@ public class CorsConfiguration implements WebMvcConfigurer {
         registry.addMapping("/**")
             .allowedOrigins("http://localhost:3000")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
+            /*.allowedOrigins("*")
+            .allowedHeaders("*")
+            .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");*/
     }
 }
