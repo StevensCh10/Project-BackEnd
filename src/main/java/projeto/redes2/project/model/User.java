@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import projeto.redes2.project.core.validation.Age;
-import projeto.redes2.project.core.validation.Groups;
 
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
