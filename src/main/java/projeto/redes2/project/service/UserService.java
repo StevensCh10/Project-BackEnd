@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import projeto.redes2.project.enums.Roles;
 import projeto.redes2.project.exception.EntityAlreadyExists;
 import projeto.redes2.project.exception.EntityInUse;
 import projeto.redes2.project.exception.EntityNotFoundInTheAppeal;
@@ -46,6 +48,7 @@ public class UserService {
 			if(repository.findByEmail(user.getEmail()) != null) {
 				throw new EntityAlreadyExists(String.format("Email '%s' is already registered.", user.getEmail()));
 			}
+			user.setRole(Roles.USER.toString());
 			return repository.save(user);			
 		}
 		throw new EntityAlreadyExists(String.format("Name '%s' unavailable.", user.getName()));
