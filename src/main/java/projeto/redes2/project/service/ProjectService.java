@@ -3,7 +3,7 @@ package projeto.redes2.project.service;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import projeto.redes2.project.exception.EntityAlreadyExists;
 import projeto.redes2.project.exception.EntityInUse;
 import projeto.redes2.project.exception.EntityNotFound;

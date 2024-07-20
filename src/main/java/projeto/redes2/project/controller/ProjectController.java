@@ -2,8 +2,6 @@ package projeto.redes2.project.controller;
 
 import java.util.ArrayList;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import projeto.redes2.project.model.Project;
 import projeto.redes2.project.service.ProjectService;
 
@@ -33,35 +32,35 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{id}") 
-	public Project get(@PathVariable Long id){
+	public Project get(@Valid @PathVariable Long id){
 		return service.find(id);			
 	}
 	
 	@GetMapping("/userProjects/{idUser}")
-	public ResponseEntity<ArrayList<Project>> allProjects(@PathVariable Long idUser){
+	public ResponseEntity<ArrayList<Project>> allProjects(@Valid @PathVariable Long idUser){
 		ArrayList<Project> projects = service.all(idUser);
 		return ResponseEntity.ok(projects);
 	}
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public Project add(@RequestBody @Valid Project receivedProject){	
+	public Project add(@Valid @RequestBody Project receivedProject){	
 		return service.add(receivedProject);	
 	}
 	
 	@PatchMapping("/{id}")
-	public Project updatePartial(@RequestBody Map<String, Object> fields, @PathVariable Long id, HttpServletRequest request){
+	public Project updatePartial(@Valid @RequestBody Map<String, Object> fields, @Valid @PathVariable Long id, @Valid HttpServletRequest request){
 		return service.updatePartial(fields, id, request);
 	}
 	
 	@PutMapping("/{id}")
-	public Project update(@RequestBody @Valid Project projectAtt, @PathVariable Long id){
+	public Project update(@Valid @RequestBody Project projectAtt, @Valid @PathVariable Long id){
 		return service.update(projectAtt, id);
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id){
+	public void delete(@Valid @PathVariable Long id){
 		service.delete(id);	
 	} 
 }
