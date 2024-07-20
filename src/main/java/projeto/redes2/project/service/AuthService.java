@@ -22,7 +22,7 @@ public class AuthService {
         if (user != null) {
             return invalidPassword(password, user);
         }
-        throw new EntityNotFoundInTheAppeal("Email não encontrado");
+        throw new EntityNotFoundInTheAppeal("Email not found");
     }
 
     public User findByEmail(String email){
@@ -38,7 +38,7 @@ public class AuthService {
             String token = this.tokenService.generateToken(user);
             return new ResponseDTO(user, token);
         }else{
-            throw new EntityNotFoundInTheAppeal("Senha inválida");
+            throw new EntityNotFoundInTheAppeal("Invalid password");
         }
     }
 }
