@@ -21,6 +21,8 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository repository;
+	
+	private Field field;
 
 	public User find(Long id) {
 		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User '%s' not unregistered.", id)));
@@ -58,7 +60,7 @@ public class UserService {
 		User userFields = objMapper.convertValue(fields, User.class);
 		
 		fields.forEach((propertyName, propertyValue) -> {
-			Field field = ReflectionUtils.findField(User.class, propertyName);
+			field = ReflectionUtils.findField(User.class, propertyName);
 			field.setAccessible(true);
 			
 			Object newValue = ReflectionUtils.getField(field, userFields);	

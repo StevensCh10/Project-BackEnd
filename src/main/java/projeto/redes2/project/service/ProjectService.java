@@ -32,6 +32,8 @@ public class ProjectService {
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	private Field field;
 	
 	
 	public ArrayList<Project> all(Long userID){
@@ -70,7 +72,7 @@ public class ProjectService {
 			Project projectFields = objMapper.convertValue(fields, Project.class);
 			
 			fields.forEach((propertyName, propertyValue) -> {
-				Field field = ReflectionUtils.findField(Project.class, propertyName);
+				field = ReflectionUtils.findField(Project.class, propertyName);
 				field.setAccessible(true);
 				
 				Object newValue = ReflectionUtils.getField(field, projectFields);	
