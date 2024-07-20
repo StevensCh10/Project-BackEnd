@@ -9,15 +9,14 @@ Esse projeto foi e ainda está sendo produzido usando as boas práticas de desen
 
 Tópicos e ferramentas usadas no projeto: 
   
+  - Java
   - MySql 
   - Spring data JPA
   - Hibernate
   - Lombok
-  - Flyway para versionamento de schemas do banco de dados
+  - Flyway
   - Tratamento e personalização de exceções usando a especificação RFC 7807
-  - Constraints de validações (utilizando o Resouce Bundle do Spring validation para personalizar mensagens)
-- Spring security e JWT (Ainda estudando para melhor implementação)
-
-Tópicos e ferramentas que serão adicionadas no projeto: 
-  
-  - Swagger
+  - Constraints de validações
+  - Spring security.
+  - JWT.
+  - Spring doc.
