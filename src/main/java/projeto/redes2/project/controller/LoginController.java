@@ -10,19 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import projeto.redes2.project.model.User;
 import projeto.redes2.project.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/login")
+@RequiredArgsConstructor
 public class LoginController {
 	
 	private final UserService userService;
-	
-	public LoginController(UserService userService) {
-		this.userService = userService;
-	}
 	
 	@GetMapping("/{userName}/{password}")
 	public User checkLogin(@Valid @PathVariable String userName, @Valid @PathVariable String password){

@@ -17,19 +17,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import projeto.redes2.project.model.Project;
 import projeto.redes2.project.service.ProjectService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/project")
+@RequiredArgsConstructor
 public class ProjectController {
 	
 	private final ProjectService service;
-	
-	public ProjectController(ProjectService projectService) {
-		this.service = projectService;
-	}
 	
 	@GetMapping("/{id}") 
 	public Project get(@Valid @PathVariable Long id){

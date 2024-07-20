@@ -13,19 +13,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import projeto.redes2.project.model.User;
 import projeto.redes2.project.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 	
 	private final UserService service;
-	
-	public UserController(UserService userService) {
-		this.service = userService;
-	}	
 	
 	@PatchMapping("/{id}")
 	public User updatePartial(@Valid @RequestBody Map<String, Object> fields, @Valid @PathVariable Long id){

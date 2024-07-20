@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -25,16 +25,12 @@ import projeto.redes2.project.repository.ProjectRepository;
 import projeto.redes2.project.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectService {
 	
-	@Autowired
-	private ProjectRepository repository;
-	
-	@Autowired
-	private UserRepository userRepository;
-
+	private final ProjectRepository repository;
+	private final UserRepository userRepository;
 	private Field field;
-	
 	
 	public ArrayList<Project> all(Long userID){
 		userRepository.findById(userID).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User with id %d is not registered.", userID)));

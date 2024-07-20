@@ -3,14 +3,13 @@ package projeto.redes2.project.service;
 import java.lang.reflect.Field;
 import java.util.Map;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import lombok.RequiredArgsConstructor;
 import projeto.redes2.project.enums.Roles;
 import projeto.redes2.project.exception.EntityAlreadyExists;
 import projeto.redes2.project.exception.EntityInUse;
@@ -19,11 +18,10 @@ import projeto.redes2.project.model.User;
 import projeto.redes2.project.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 	
-	@Autowired
-	private UserRepository repository;
-	
+	private final UserRepository repository;
 	private Field field;
 
 	public User find(Long id) {
