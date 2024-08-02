@@ -1,8 +1,9 @@
 package projeto.redes2.project.service;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import projeto.redes2.project.dto.ProjectDTO;
 import projeto.redes2.project.exception.EntityAlreadyExists;
 import projeto.redes2.project.exception.EntityInUse;
 import projeto.redes2.project.exception.EntityNotFound;
@@ -32,11 +34,15 @@ public class ProjectService {
 	private final UserRepository userRepository;
 	private Field field;
 	
-	public ArrayList<Project> all(Long userID){
+	public List<ProjectDTO> all(Long userID){
 		userRepository.findById(userID).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User with id %d is not registered.", userID)));
-		return repository.allProjects(userID);
+		return repository.allProjects(userID).stream().map(ProjectDTO::fromEntity).collect(Collectors.toList());
 	}
 	
+	public ProjectDTO getProject(Long id){
+		return ProjectDTO.fromEntity(find(id));
+	}
+
 	public Project find(Long id) {
 		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("Project with id %d is not registered.", id)));
 	}
@@ -46,18 +52,17 @@ public class ProjectService {
 	}
 	
 	@Transactional
-	public Project add(Project p) {
+	public ProjectDTO add(Project p, User user) {
 		Long userID = p.getUser().getId();
 		if(repository.findByName(p.getName(), userID) == null) {		
-			User user = findUser(userID);
 			p.setUser(user);
-			return repository.saveAndFlush(p);						
+			return ProjectDTO.fromEntity(repository.saveAndFlush(p));						
 		}
 		throw new EntityAlreadyExists(String.format("There is already a project called '%s'.", p.getName()));		
 	} 
 	
 	@Transactional
-	public Project updatePartial(Map<String, Object> fields, Long id, HttpServletRequest request) {
+	public ProjectDTO updatePartial(Map<String, Object> fields, Long id, HttpServletRequest request) {
 		try {
 			Project projectDestiny = find(id);
 			
@@ -74,7 +79,7 @@ public class ProjectService {
 				Object newValue = ReflectionUtils.getField(field, projectFields);	
 				ReflectionUtils.setField(field, projectDestiny, newValue);
 			});	
-			return repository.save(projectDestiny);
+			return ProjectDTO.fromEntity(repository.save(projectDestiny));	
 		} catch (IllegalArgumentException e) {
 			Throwable rootCause = ExceptionUtils.getRootCause(e);
 			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, new ServletServerHttpRequest(request));
@@ -82,7 +87,7 @@ public class ProjectService {
 	}
 	
 	@Transactional
-	public Project update(Project projectAtt, Long id) {
+	public ProjectDTO update(Project projectAtt, Long id) {
 		Project currentProject = find(id);
 		Long userID = projectAtt.getUser().getId();
 		Project find = repository.findByName(projectAtt.getName(), userID);
@@ -94,7 +99,7 @@ public class ProjectService {
 		userRepository.findById(userID).orElseThrow(() -> new EntityNotFound(String.format("User with id %d is not registered.", userID)));
 		BeanUtils.copyProperties(projectAtt, currentProject, "id");
 		
-		return repository.saveAndFlush(currentProject);
+		return ProjectDTO.fromEntity(repository.saveAndFlush(currentProject));	
 	}
 	
 	@Transactional

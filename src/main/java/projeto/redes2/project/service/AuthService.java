@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import projeto.redes2.project.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import projeto.redes2.project.dto.ResponseDTO;
+import projeto.redes2.project.dto.UserDTO;
 import projeto.redes2.project.exception.EntityNotFoundInTheAppeal;
 import projeto.redes2.project.model.User;
 import projeto.redes2.project.repository.UserRepository;
@@ -25,10 +26,10 @@ public class AuthService {
         throw new EntityNotFoundInTheAppeal("Email not found");
     }
 
-    public User findByEmail(String email){
+    public UserDTO findByEmail(String email){
         User user = userRepository.findByEmail(email);
         if(user != null){
-            return user;
+            return UserDTO.fromEntity(user);
         }
         return null;
     }
@@ -36,7 +37,7 @@ public class AuthService {
     private ResponseDTO invalidPassword(String password, User user){
         if(passwordEncoder.matches(password, user.getPassword())){
             String token = this.tokenService.generateToken(user);
-            return new ResponseDTO(user, token);
+            return new ResponseDTO(UserDTO.fromEntity(user), token);
         }else{
             throw new EntityNotFoundInTheAppeal("Invalid password");
         }

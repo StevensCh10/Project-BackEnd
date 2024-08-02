@@ -1,9 +1,8 @@
 package projeto.redes2.project.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import projeto.redes2.project.dto.ProjectDTO;
 import projeto.redes2.project.model.Project;
 import projeto.redes2.project.service.ProjectService;
+import projeto.redes2.project.service.UserService;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -28,37 +29,42 @@ import projeto.redes2.project.service.ProjectService;
 public class ProjectController {
 	
 	private final ProjectService service;
+	private final UserService userService;
 	
 	@GetMapping("/{id}") 
-	public Project get(@Valid @PathVariable Long id){
-		return service.find(id);			
+	@ResponseStatus(HttpStatus.OK)
+	public ProjectDTO get(@PathVariable Long id){
+		return service.getProject(id);			
 	}
 	
 	@GetMapping("/userProjects/{idUser}")
-	public ResponseEntity<ArrayList<Project>> allProjects(@Valid @PathVariable Long idUser){
-		ArrayList<Project> projects = service.all(idUser);
-		return ResponseEntity.ok(projects);
+	@ResponseStatus(HttpStatus.OK)
+	public List<ProjectDTO> allProjects(@PathVariable Long idUser){
+		return service.all(idUser);
 	}
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public Project add(@Valid @RequestBody Project receivedProject){	
-		return service.add(receivedProject);	
+	public ProjectDTO add(@Valid @RequestBody Project receivedProject){
+		var user = userService.find(receivedProject.getUser().getId());
+		return service.add(receivedProject, user);	
 	}
 	
 	@PatchMapping("/{id}")
-	public Project updatePartial(@Valid @RequestBody Map<String, Object> fields, @Valid @PathVariable Long id, @Valid HttpServletRequest request){
+	@ResponseStatus(HttpStatus.OK)
+	public ProjectDTO updatePartial(@Valid @RequestBody Map<String, Object> fields, @PathVariable Long id, @Valid HttpServletRequest request){
 		return service.updatePartial(fields, id, request);
 	}
 	
 	@PutMapping("/{id}")
-	public Project update(@Valid @RequestBody Project projectAtt, @Valid @PathVariable Long id){
+	@ResponseStatus(HttpStatus.OK)
+	public ProjectDTO update(@Valid @RequestBody Project projectAtt, @PathVariable Long id){
 		return service.update(projectAtt, id);
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@Valid @PathVariable Long id){
+	public void delete(@PathVariable Long id){
 		service.delete(id);	
 	} 
 }

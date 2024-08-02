@@ -1,7 +1,6 @@
 package projeto.redes2.project.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
     private final UserService userService;
     private final TokenService tokenService;
@@ -50,9 +48,6 @@ public class AuthController {
     @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseDTO registerDonor(@Valid @RequestBody User user){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            User newUser = userService.register(user);
-            String token = this.tokenService.generateToken(newUser);
-            return new ResponseDTO(newUser, token);
+            return userService.register(user);
     }
 }
