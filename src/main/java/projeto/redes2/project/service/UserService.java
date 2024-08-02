@@ -34,18 +34,6 @@ public class UserService {
 		return repository.findById(id).orElseThrow(() -> new EntityNotFoundInTheAppeal(String.format("User '%s' not unregistered.", id)));
 	}
 
-	public User checkLogin(String userName, String password) {
-		User user = repository.checkLogin(userName, password);
-		
-		if(user == null) {
-			if(repository.findByUsername(userName) == null) {
-				throw new EntityNotFoundInTheAppeal(String.format("User '%s' not unregistered.", userName));
-			}
-			throw new EntityNotFoundInTheAppeal("Incorret password.");
-		}
-		return user;
-	}
-		
 	@Transactional
 	public ResponseDTO register(User user) {
 		if(repository.findByName(user.getName()) == null) {
